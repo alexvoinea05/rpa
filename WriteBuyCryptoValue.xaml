@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="WriteBuyCryptoValue" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="WriteBuyCryptoValue" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:obac="clr-namespace:Org.BouncyCastle.Asn1.Cms;assembly=BouncyCastle.Crypto" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="cryptoName" Type="InArgument(x:String)" />
     <x:Property Name="buyPrice" Type="InArgument(x:String)" />
@@ -6,10 +6,10 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>681.6,1373.6</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>817.6,1755.2</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>WriteBuyCryptoValue_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="28">
+    <scg:List x:TypeArguments="x:String" Capacity="60">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -38,10 +38,17 @@
       <x:String>System.Xml.Serialization</x:String>
       <x:String>System.Collections.ObjectModel</x:String>
       <x:String>System.Activities.DynamicUpdate</x:String>
+      <x:String>System.Reflection</x:String>
+      <x:String>System.Runtime.InteropServices</x:String>
+      <x:String>UiPath.Mail</x:String>
+      <x:String>UiPath.Mail.SMTP.Activities</x:String>
+      <x:String>UiPath.Mail.Activities</x:String>
+      <x:String>Org.BouncyCastle.Asn1.Cms</x:String>
+      <x:String>Org.BouncyCastle.Asn1</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="18">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -60,79 +67,159 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Excel.Activities</AssemblyReference>
       <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>UiPath.Mail.Activities</AssemblyReference>
+      <AssemblyReference>BouncyCastle.Crypto</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="WriteBuyCryptoValue" sap:VirtualizedContainerService.HintSize="475.2,1308.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="WriteBuyCryptoValue" sap:VirtualizedContainerService.HintSize="828,1690.4" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:IEnumerable(x:Object)" Name="intermVar" />
       <Variable x:TypeArguments="x:Int32" Name="indexBuyValue" />
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="outputWorkbook" />
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="outputWriteWorkbook" />
       <Variable x:TypeArguments="ui:WorkbookApplication" Name="outputWrite1Output" />
+      <Variable x:TypeArguments="x:String" Name="email">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String">catalin7332@gmail.com</Literal>
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="x:String" Name="pass">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String">proiectrpa</Literal>
+        </Variable.Default>
+      </Variable>
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="433.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[buyPrice]" />
-    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="433.6,462.4" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" InstanceCachePeriod="3000" Workbook="[outputWorkbook]" WorkbookPath="rpaCrypto.xlsx">
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="786.4,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[buyPrice]" />
+    <TryCatch DisplayName="Try Catch" sap:VirtualizedContainerService.HintSize="786.4,483.2" sap2010:WorkflowViewState.IdRef="TryCatch_1">
+      <TryCatch.Try>
+        <ui:ExcelApplicationScope Password="{x:Null}" sap2010:Annotation.AnnotationText="excelul raspunzator de proiect, partea de jos este pentru a stii de unde sa scriem mai apoi in excel" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="433.6,550.4" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_2" InstanceCachePeriod="3000" Workbook="[outputWorkbook]" WorkbookPath="rpaCrypto.xlsx">
+          <ui:ExcelApplicationScope.Body>
+            <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+              <ActivityAction.Argument>
+                <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+              </ActivityAction.Argument>
+              <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="375.2,396.8" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                <Sequence.Variables>
+                  <Variable x:TypeArguments="sd:DataTable" Name="outputDataTable" />
+                </Sequence.Variables>
+                <sap:WorkflowViewStateService.ViewState>
+                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                  </scg:Dictionary>
+                </sap:WorkflowViewStateService.ViewState>
+                <ui:ExcelReadRange AddHeaders="True" sap2010:Annotation.AnnotationText="sheet-ul raspunzator de stocarea valorilor cu care am cumparat crypto" DataTable="[outputDataTable]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="333.6,104" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="buyValue">
+                  <ui:ExcelReadRange.Range>
+                    <InArgument x:TypeArguments="x:String">
+                      <Literal x:TypeArguments="x:String" Value="" />
+                    </InArgument>
+                  </ui:ExcelReadRange.Range>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                </ui:ExcelReadRange>
+                <Assign sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+                  <Assign.To>
+                    <OutArgument x:TypeArguments="x:Int32">[indexBuyValue]</OutArgument>
+                  </Assign.To>
+                  <Assign.Value>
+                    <InArgument x:TypeArguments="x:Int32">[outputDataTable.Rows.Count+2]</InArgument>
+                  </Assign.Value>
+                </Assign>
+                <ui:ExcelCloseWorkbook DisplayName="Close Workbook" sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="ExcelCloseWorkbook_3" Workbook="[outputWorkbook]" />
+              </Sequence>
+            </ActivityAction>
+          </ui:ExcelApplicationScope.Body>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+        </ui:ExcelApplicationScope>
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap:VirtualizedContainerService.HintSize="400,318.4" sap2010:WorkflowViewState.IdRef="Catch`1_1">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence sap:VirtualizedContainerService.HintSize="375.2,248" sap2010:WorkflowViewState.IdRef="Sequence_5">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Error" Message="[&quot;Unknown exception&quot;]" />
+              <TerminateWorkflow DisplayName="Terminate Workflow" Exception="[exception]" sap:VirtualizedContainerService.HintSize="333.6,22.4" sap2010:WorkflowViewState.IdRef="TerminateWorkflow_1" />
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+    </TryCatch>
+    <ui:ExcelApplicationScope Password="{x:Null}" sap2010:Annotation.AnnotationText="raspunzator de scrierea valorilor cu care am cumparat" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="786.4,941.6" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" InstanceCachePeriod="3000" Workbook="[outputWriteWorkbook]" WorkbookPath="rpaCrypto.xlsx">
       <ui:ExcelApplicationScope.Body>
         <ActivityAction x:TypeArguments="ui:WorkbookApplication">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="375.2,352.8" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="752.8,800.8" sap2010:WorkflowViewState.IdRef="Sequence_3">
             <Sequence.Variables>
               <Variable x:TypeArguments="sd:DataTable" Name="outputDataTable" />
+              <Variable x:TypeArguments="x:Boolean" Name="booleanActivity" />
+              <Variable x:TypeArguments="x:String" Name="variable1" />
+              <Variable x:TypeArguments="x:String" Name="variable2" />
+              <Variable x:TypeArguments="obac:PasswordRecipientInfo" Name="password" />
             </Sequence.Variables>
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <ui:ExcelReadRange AddHeaders="True" DataTable="[outputDataTable]" DisplayName="Read Range" sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="ExcelReadRange_1" SheetName="buyValue">
-              <ui:ExcelReadRange.Range>
-                <InArgument x:TypeArguments="x:String">
-                  <Literal x:TypeArguments="x:String" Value="" />
-                </InArgument>
-              </ui:ExcelReadRange.Range>
-            </ui:ExcelReadRange>
-            <Assign sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="Assign_1">
-              <Assign.To>
-                <OutArgument x:TypeArguments="x:Int32">[indexBuyValue]</OutArgument>
-              </Assign.To>
-              <Assign.Value>
-                <InArgument x:TypeArguments="x:Int32">[outputDataTable.Rows.Count+2]</InArgument>
-              </Assign.Value>
-            </Assign>
-            <ui:ExcelCloseWorkbook DisplayName="Close Workbook" sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="ExcelCloseWorkbook_3" Workbook="[outputWorkbook]" />
+            <ui:ExcelWriteCell Cell="[&quot;A&quot;+indexBuyValue.ToString]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="711.2,88" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="buyValue" Text="[cryptoName]" />
+            <ui:ExcelWriteCell Cell="[&quot;B&quot;+ indexBuyValue.ToString]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="711.2,88" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="buyValue" Text="[buyPrice]" />
+            <ui:ExcelSaveWorkbook DisplayName="Save Workbook" sap:VirtualizedContainerService.HintSize="711.2,22.4" sap2010:WorkflowViewState.IdRef="ExcelSaveWorkbook_1" />
+            <ui:UiElementExists DisplayName="Element Exists 'Title Bar'" Exists="[booleanActivity]" sap:VirtualizedContainerService.HintSize="711.2,107.2" sap2010:WorkflowViewState.IdRef="UiElementExists_1">
+              <ui:UiElementExists.Target>
+                <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" Id="7f85ee18-264f-43c3-82e1-8f66619eb3a7" InformativeScreenshot="ec4e02775aa0cc215ad7650c0b31a7a7" Selector="&lt;wnd app='excel.exe' /&gt;">
+                  <ui:Target.TimeoutMS>
+                    <InArgument x:TypeArguments="x:Int32" />
+                  </ui:Target.TimeoutMS>
+                  <ui:Target.WaitForReady>
+                    <InArgument x:TypeArguments="ui:WaitForReady" />
+                  </ui:Target.WaitForReady>
+                </ui:Target>
+              </ui:UiElementExists.Target>
+            </ui:UiElementExists>
+            <If Condition="[booleanActivity]" sap:VirtualizedContainerService.HintSize="711.2,242.4" sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Then>
+                <ui:ExcelCloseWorkbook DisplayName="Close Workbook" sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="ExcelCloseWorkbook_5" Workbook="[outputWriteWorkbook]" />
+              </If.Then>
+              <If.Else>
+                <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="333.6,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Trace" Message="[&quot;Excelul nu este deschis&quot;]" />
+              </If.Else>
+            </If>
           </Sequence>
         </ActivityAction>
       </ui:ExcelApplicationScope.Body>
-    </ui:ExcelApplicationScope>
-    <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Excel Application Scope" sap:VirtualizedContainerService.HintSize="433.6,580.8" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_3" InstanceCachePeriod="3000" Workbook="[outputWriteWorkbook]" WorkbookPath="rpaCrypto.xlsx">
-      <ui:ExcelApplicationScope.Body>
-        <ActivityAction x:TypeArguments="ui:WorkbookApplication">
-          <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
-          </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="375.2,471.2" sap2010:WorkflowViewState.IdRef="Sequence_3">
-            <Sequence.Variables>
-              <Variable x:TypeArguments="sd:DataTable" Name="outputDataTable" />
-            </Sequence.Variables>
-            <sap:WorkflowViewStateService.ViewState>
-              <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-              </scg:Dictionary>
-            </sap:WorkflowViewStateService.ViewState>
-            <ui:ExcelWriteCell Cell="[&quot;A&quot;+indexBuyValue.ToString]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="333.6,88" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_1" SheetName="buyValue" Text="[cryptoName]" />
-            <ui:ExcelWriteCell Cell="[&quot;B&quot;+ indexBuyValue.ToString]" DisplayName="Write Cell" sap:VirtualizedContainerService.HintSize="333.6,88" sap2010:WorkflowViewState.IdRef="ExcelWriteCell_2" SheetName="buyValue" Text="[buyPrice]" />
-            <ui:ExcelSaveWorkbook DisplayName="Save Workbook" sap:VirtualizedContainerService.HintSize="333.6,22.4" sap2010:WorkflowViewState.IdRef="ExcelSaveWorkbook_1" />
-            <ui:ExcelCloseWorkbook DisplayName="Close Workbook" sap:VirtualizedContainerService.HintSize="333.6,60" sap2010:WorkflowViewState.IdRef="ExcelCloseWorkbook_5" Workbook="[outputWriteWorkbook]" />
-          </Sequence>
-        </ActivityAction>
-      </ui:ExcelApplicationScope.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
     </ui:ExcelApplicationScope>
   </Sequence>
 </Activity>

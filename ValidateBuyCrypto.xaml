@@ -8,7 +8,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>681.6,614.4</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>769.6,616</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ValidateBuyCrypto_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <sco:Collection x:TypeArguments="x:String">
@@ -67,27 +67,31 @@
       <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="ValidateBuyCrypto" sap:VirtualizedContainerService.HintSize="524.8,488.8" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="ValidateBuyCrypto" sap:VirtualizedContainerService.HintSize="524.8,551.2" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
     <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="483.2,92.8" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Trace" Message="[cryptoName]" />
-    <If Condition="[priceNow&lt;wantedPrice]" sap:VirtualizedContainerService.HintSize="483.2,263.2" sap2010:WorkflowViewState.IdRef="If_1">
+    <If sap2010:Annotation.AnnotationText="validare pret curent vs pret excel" Condition="[priceNow&lt;wantedPrice]" sap:VirtualizedContainerService.HintSize="483.2,325.6" sap2010:WorkflowViewState.IdRef="If_1">
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
       <If.Then>
-        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke BuyCypto workflow" sap:VirtualizedContainerService.HintSize="333.6,113.6" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="BuyCypto.xaml">
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="apelare proces raspunzator de cumparere" DisplayName="Invoke BuyCypto workflow" sap:VirtualizedContainerService.HintSize="333.6,144.8" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="BuyCypto.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="x:String" x:Key="cryptoName">
-              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="cryptoName" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Double" x:Key="amount">
-              <mva:VisualBasicValue x:TypeArguments="x:Double" ExpressionText="amount" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:Double" x:Key="priceNow">
-              <mva:VisualBasicValue x:TypeArguments="x:Double" ExpressionText="priceNow" />
-            </InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="cryptoName">[cryptoName]</InArgument>
+            <InArgument x:TypeArguments="x:Double" x:Key="amount">[amount]</InArgument>
+            <InArgument x:TypeArguments="x:Double" x:Key="priceNow">[priceNow]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
         </ui:InvokeWorkflowFile>
       </If.Then>
     </If>
